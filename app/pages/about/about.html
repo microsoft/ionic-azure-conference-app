@@ -34,13 +34,21 @@
     </ion-list>
 
     <p>
-      The Ionic Conference is a one-day conference featuring talks from the
-      Ionic team. It is focused on Ionic applications being built with
-      Ionic 2. This includes migrating apps from Ionic 1 to Ionic 2,
-      Angular concepts, Webpack, Sass, and many other technologies used
-      in Ionic 2. Tickets are completely sold out, and we’re expecting
-      more than 1000 developers – making this the largest Ionic
-      conference ever!
+        Microsoft continues to focus on enabling developers to do amazing work as businesses and industries transform in support of the shift 
+        to a cloud-first, mobile-first world. At Build 2016 we will present the latest tools and technologies and how they can help today’s 
+        developers be their most creative and productive.
     </p>
+      <p>
+          As always, Build is filled with strong technical sessions as well as opportunities to meet and learn from 
+          others in the industry. We’ll make sure the schedule is filled with solid content, and will strive 
+          to deliver some fun surprises along the way.
+      </p>
+      <p>
+          This app was built with <a href="http://ionicframework.com/">Ionic</a> 
+          and <a href="http://taco.tools/">TACO</a>.
+      </p>
   </div>
+    <div>
+        <button (click)="checkAndInstallUpdates()" primary block [hidden]="isWindows">Check for Updates</button>
+    </div>
 </ion-content>

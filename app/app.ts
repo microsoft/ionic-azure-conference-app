@@ -8,7 +8,6 @@ import { ConferenceData } from './providers/conference-data';
 import { LoginPage } from './pages/login/login';
 import { SignupPage } from './pages/signup/signup';
 import { TabsPage } from './pages/tabs/tabs';
-import { TutorialPage } from './pages/tutorial/tutorial';
 import { UserData } from './providers/user-data';
 
 interface PageObj {
@@ -43,7 +42,7 @@ class ConferenceApp {
     { title: 'Login', component: LoginPage, icon: 'log-in' },
     { title: 'Signup', component: SignupPage, icon: 'person-add' }
   ];
-  rootPage: any = TutorialPage;
+  rootPage: any = TabsPage;
 
   constructor(
     private events: Events,

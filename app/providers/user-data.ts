@@ -16,7 +16,8 @@ export class UserData {
   }
 
   addFavorite(sessionName) {
-    this._favorites.push(sessionName);
+      this._favorites.push(sessionName);
+      this.saveToLocalStorage();
   }
 
   removeFavorite(sessionName) {
@@ -24,6 +25,7 @@ export class UserData {
     if (index > -1) {
       this._favorites.splice(index, 1);
     }
+    this.saveToLocalStorage();
   }
 
   login(username) {
@@ -59,5 +61,11 @@ export class UserData {
     return this.storage.get(this.HAS_LOGGED_IN).then((value) => {
       return value;
     });
+  }
+
+  saveToLocalStorage() {
+      if (this._favorites.length > 0) {
+          this.storage.set("favorites", JSON.stringify(this._favorites));
+      }
   }
 }

@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.conference" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="vs.ionic.conference" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Ionic Conference</name>
     <description>
-        An Ionic Framework application for the Ionic Conference.
+        An Ionic Framework application for the Ionic Conference. With Azure backend
   </description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+    <author email="ridomin@live.com" href="http://taco.visualstudio.com/">
+      Visual Studio JS Mobile Team
   </author>
     <content src="index.html" />
     <access origin="*" />
@@ -122,4 +122,5 @@
     <plugin name="com.verso.cordova.clipboard" src="https://github.com/VersoSolutions/CordovaClipboard" version="0.1.0" />
     <plugin name="cordova-plugin-crosswalk-webview" version="1.8.0" />
     <engine name="ios" spec="~4.1.1" />
+    <engine name="android" spec="~5.1.1" />
 </widget>

@@ -14,6 +14,12 @@ This is purely a demo of Ionic 2 with TypeScript. It is still in development.
  - [App Preview](#app-preview)
  - [File Structure of App](#file-structure-of-app)
 
+## Visual Studio Support
+
+* Install Visual Studio 2015 Update 3, this will include Tools for Apache Cordova Update 10
+* Open the file ionic-conference-app.jsproj 
+* VS will restore all packages for you
+* Use the task runner explorer to execute gulp tasks
 
 ## Getting Started
 
@@ -51,7 +57,8 @@ See [CONTRIBUTING.md](https://github.com/driftyco/ionic-conference-app/blob/mast
 * Toggle - [ [template](https://github.com/driftyco/ionic-conference-app/blob/master/app/pages/schedule-filter/schedule-filter.html) ]
 [code](https://github.com/driftyco/ionic-conference-app/blob/master/app/pages/tutorial/tutorial.ts) ]
 * Using Angular HTTP for JSON - [ [code](https://github.com/driftyco/ionic-conference-app/blob/master/app/providers/conference-data.ts) | [usage](https://github.com/driftyco/ionic-conference-app/blob/master/app/pages/schedule/schedule.ts) ]
-
+* Using Azure Mobile App. Authentication with social networks. Save favorites to EasyTables
+* Using Code-Push to perform out of band updates
 
 ## App Preview
 

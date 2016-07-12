@@ -16,16 +16,8 @@ export class LoginPage {
 
   constructor(private nav: NavController, private userData: UserData) {}
 
-  onLogin(form) {
-    this.submitted = true;
-
-    if (form.valid) {
-      this.userData.login(this.login.username);
+  doLogin(provider: string) {
+      this.userData.login(provider);
       this.nav.push(TabsPage);
-    }
-  }
-
-  onSignup() {
-    this.nav.push(SignupPage);
   }
 }

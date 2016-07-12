@@ -9,6 +9,11 @@ export class UserData {
   HAS_LOGGED_IN = 'hasLoggedIn';
   storage = new Storage(LocalStorage);
 
+  client: WindowsAzure.MobileServiceClient;
+  userid: string;
+  remoteFavsTable: WindowsAzure.MobileServiceTable;
+  loggedIn: boolean = false;
+
   constructor(private events: Events) {}
 
   hasFavorite(sessionName) {
@@ -28,29 +33,35 @@ export class UserData {
     this.saveToLocalStorage();
   }
 
-  login(username) {
-    this.storage.set(this.HAS_LOGGED_IN, true);
-    this.setUsername(username);
-    this.events.publish('user:login');
+  login(provider: string) {
+      this.client = new WindowsAzure.MobileServiceClient('https://build2016-vsmobile.azurewebsites.net/');
+      this.client.login(provider).done(this.loginResponse.bind(this));
   }
 
-  signup(username) {
-    this.storage.set(this.HAS_LOGGED_IN, true);
-    this.setUsername(username);
-    this.events.publish('user:signup');
+  loginResponse(response: WindowsAzure.User) {
+      this.setUsername(response.userId);      
+      this.userid = response.userId;
+      this.loggedIn = true;
+      this.events.publish('user:login');
+      this.syncFavorites();
+  }
+
+  signup(name:string) {
+      //this.storage.set(this.HAS_LOGGED_IN, true);
+      this.events.publish('user:signup');
   }
 
   logout() {
-    this.storage.remove(this.HAS_LOGGED_IN);
-    this.storage.remove('username');
-    this.events.publish('user:logout');
+      this.loggedIn = false;
+      this.client.logout();
+      this.events.publish('user:logout');
   }
 
   setUsername(username) {
     this.storage.set('username', username);
   }
 
-  getUsername() {
+  getUsername() {  
     return this.storage.get('username').then((value) => {
       return value;
     });
@@ -68,4 +79,86 @@ export class UserData {
           this.storage.set("favorites", JSON.stringify(this._favorites));
       }
   }
+
+  syncFavorites() {
+      if (this.client && this.loggedIn) {
+          let favs = this._favorites.slice(); //local copy
+          this.remoteFavsTable = this.client.getTable('favorites');
+          this.remoteFavsTable.where({ userId: this.userid }).read()
+              .then((data: [any]) => {
+                  data.forEach(s => {
+                      if (this.hasFavorite(s.sessionName)) {
+                          console.log(`remote ${s.sessionName} exist in local`);
+                          let pos = favs.indexOf(s.sessionName);
+                          favs.splice(pos, 1);
+                      } else {
+                          this.addFavorite(s.sessionName);
+                          console.log(`adding ${s.sessionName} to local`);
+                      }
+                  });
+                  favs.forEach(localFav => this.addToRemoteIfNotExist(localFav));
+              });
+      }
+  }
+
+  addToRemoteIfNotExist(sessionName: string) {
+      let favDto = {
+          userid: this.userid,
+          sessionName: sessionName,
+          loginProvider: "TBD"
+      };
+
+      this.remoteFavsTable.where(favDto).read().then((d) => {
+          // if nothing found...
+          if (d && d.length === 0) {
+              // then insert 
+              this.remoteFavsTable.insert(favDto);
+              console.log(`adding ${sessionName} to remote`);
+          }
+      });
+  }
+
+  deleteSessionFromRemote(sessionName) {
+      this.remoteFavsTable = this.client.getTable('favorites');
+      this.remoteFavsTable.where({ userid: this.userid, sessionname: sessionName }).read()
+          .then((favs: [any]) => {
+              favs.forEach((f) => {
+                  console.log("removing " + f.id + " " + f.sessionName);
+                  this.remoteFavsTable.del({ id: f.id }).done(
+                      () => { console.log("removed: " + f.id); },
+                      (err) => { console.log("Error Removing:" + JSON.stringify(err)); }
+                  );
+              });
+          });
+  }
+
+  cleanRemoteFavs() {
+      this.remoteFavsTable = this.client.getTable('favorites');
+      this.remoteFavsTable.where({ userid: this.userid }).read()
+          .then((favs: [any]) => {
+              favs.forEach((f) => {
+                  console.log("removing " + f.id + " " + f.sessionName);
+                  this.remoteFavsTable.del({ id: f.id }).done(
+                      () => {
+                          console.log("removed: " + f.id);
+                          this.events.publish('favs:sync');
+                      },
+                      (err) => { console.log("Error Removing:" + JSON.stringify(err)); }
+                  );
+              });
+
+          });
+  }
+
+  cleanFavorites() {
+      if (this.client) {
+          this._favorites = [];
+          this.storage.remove("favorites");
+          this.cleanRemoteFavs();
+          console.log("clear favs");
+          this.events.publish('favs:sync');
+      }
+
+  }
+
 }

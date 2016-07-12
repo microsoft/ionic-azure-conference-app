@@ -29,3 +29,10 @@ $RECYCLE.BIN/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+
+.vs/
+bin/
+bld/
+*.user
+*.suo
+*.sln

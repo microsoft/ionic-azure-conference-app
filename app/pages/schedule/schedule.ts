@@ -42,6 +42,17 @@ export class SchedulePage {
     this.updateSchedule();
   }
 
+  doRefresh(refresher) {
+      console.log('Begin async operation', refresher);
+
+      this.user.syncFavorites();
+
+      setTimeout(() => {
+          console.log('Async operation has ended');
+          refresher.complete();
+      }, 2000);
+  }
+
   updateSchedule() {
     // Close any open sliding items when the schedule updates
     this.scheduleList && this.scheduleList.closeSlidingItems();
@@ -72,7 +83,7 @@ export class SchedulePage {
   }
 
   addFavorite(slidingItem: ItemSliding, sessionData) {
-
+      sessionData.favorite = true;
     if (this.user.hasFavorite(sessionData.name)) {
       // woops, they already favorited it! What shall we do!?
       // prompt them to remove it
@@ -99,6 +110,7 @@ export class SchedulePage {
   }
 
   removeFavorite(slidingItem: ItemSliding, sessionData, title) {
+      sessionData.favorite = false;
     let alert = Alert.create({
       title: title,
       message: 'Would you like to remove this session from your favorites?',

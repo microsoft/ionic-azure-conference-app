@@ -50,7 +50,7 @@ class ConferenceApp {
     private userData: UserData,
     private menu: MenuController,
     platform: Platform,
-    confData: ConferenceData
+    private confData: ConferenceData
   ) {
     // Call any initial plugins when ready
     platform.ready().then(() => {
@@ -99,6 +99,10 @@ class ConferenceApp {
 
     this.events.subscribe('user:logout', () => {
       this.enableMenu(false);
+    });
+
+    this.events.subscribe('favs:sync', () => {
+        this.confData.load();
     });
   }
 

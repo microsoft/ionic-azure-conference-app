@@ -30,6 +30,14 @@
 </ion-header>
 
 <ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown"
+                               pullingText="Pull to refresh"
+                               refreshingSpinner="circles"
+                               refreshingText="Refreshing...">
+        </ion-refresher-content>
+    </ion-refresher>
+
   <ion-list #scheduleList [hidden]="shownSessions === 0">
 
     <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
@@ -41,7 +49,10 @@
       <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.tracks[0] | lowercase" [hidden]="session.hide">
 
         <button ion-item (click)="goToSessionDetail(session)">
-          <h3>{{session.name}}</h3>
+          <h3>
+            <ion-icon name="ios-star-outline" [hidden]="!session.favorite"></ion-icon> 
+            {{session.name}}
+          </h3>
           <p>
             {{session.timeStart}} &mdash;
             {{session.timeEnd}}:

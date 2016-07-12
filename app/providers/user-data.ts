@@ -132,7 +132,7 @@ export class UserData {
           });
   }
 
-  cleanRemoteFavs() {
+  private cleanRemoteFavs() {
       this.remoteFavsTable = this.client.getTable('favorites');
       this.remoteFavsTable.where({ userid: this.userid }).read()
           .then((favs: [any]) => {
@@ -151,13 +151,13 @@ export class UserData {
   }
 
   cleanFavorites() {
-      if (this.client) {
-          this._favorites = [];
+      this._favorites = [];
+      if (this.client) {          
           this.storage.remove("favorites");
           this.cleanRemoteFavs();
-          console.log("clear favs");
-          this.events.publish('favs:sync');
+          console.log("clear favs");          
       }
+      this.events.publish('favs:sync');
 
   }
 

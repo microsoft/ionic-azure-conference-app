@@ -64,4 +64,8 @@ export class AccountPage {
     this.userData.logout();
     this.nav.setRoot(LoginPage);
   }
+
+  cleanRemoteFavs() {      
+      this.userData.cleanFavorites()
+  }
 }

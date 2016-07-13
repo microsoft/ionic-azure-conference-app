@@ -66,6 +66,6 @@ export class AccountPage {
   }
 
   cleanRemoteFavs() {      
-      this.userData.cleanFavorites()
+      this.userData.cleanFavorites();
   }
 }

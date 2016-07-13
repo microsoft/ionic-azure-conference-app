@@ -55,7 +55,7 @@ export class AboutPage {
               });
               this.nav.present(alert);
           } else {
-              console.log("update available: " + remotePackage.appVersion);
+              console.log('update available: ' + remotePackage.appVersion);
               let alert = Alert.create({
                   title: 'Update ' + remotePackage.appVersion + ' available',
                   message: 'Would you like to update your app?',
@@ -63,7 +63,7 @@ export class AboutPage {
                       {
                           text: 'Yes',
                           handler: () => {
-                              this.updater.installPackage(remotePackage)
+                              this.updater.installPackage(remotePackage);
                           }
                       },
                       {

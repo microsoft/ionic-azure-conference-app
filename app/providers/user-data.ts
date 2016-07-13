@@ -46,8 +46,8 @@ export class UserData {
       this.syncFavorites();
   }
 
-  signup(name:string) {
-      //this.storage.set(this.HAS_LOGGED_IN, true);
+  signup(name: string) {
+      // this.storage.set(this.HAS_LOGGED_IN, true);
       this.events.publish('user:signup');
   }
 
@@ -76,13 +76,13 @@ export class UserData {
 
   saveToLocalStorage() {
       if (this._favorites.length > 0) {
-          this.storage.set("favorites", JSON.stringify(this._favorites));
+          this.storage.set('favorites', JSON.stringify(this._favorites));
       }
   }
 
   syncFavorites() {
       if (this.client && this.loggedIn) {
-          let favs = this._favorites.slice(); //local copy
+          let favs = this._favorites.slice(); // local copy
           this.remoteFavsTable = this.client.getTable('favorites');
           this.remoteFavsTable.where({ userId: this.userid }).read()
               .then((data: [any]) => {
@@ -105,7 +105,7 @@ export class UserData {
       let favDto = {
           userid: this.userid,
           sessionName: sessionName,
-          loginProvider: "TBD"
+          loginProvider: 'TBD'
       };
 
       this.remoteFavsTable.where(favDto).read().then((d) => {
@@ -117,33 +117,19 @@ export class UserData {
           }
       });
   }
-
-  deleteSessionFromRemote(sessionName) {
-      this.remoteFavsTable = this.client.getTable('favorites');
-      this.remoteFavsTable.where({ userid: this.userid, sessionname: sessionName }).read()
-          .then((favs: [any]) => {
-              favs.forEach((f) => {
-                  console.log("removing " + f.id + " " + f.sessionName);
-                  this.remoteFavsTable.del({ id: f.id }).done(
-                      () => { console.log("removed: " + f.id); },
-                      (err) => { console.log("Error Removing:" + JSON.stringify(err)); }
-                  );
-              });
-          });
-  }
-
+  
   private cleanRemoteFavs() {
       this.remoteFavsTable = this.client.getTable('favorites');
       this.remoteFavsTable.where({ userid: this.userid }).read()
           .then((favs: [any]) => {
               favs.forEach((f) => {
-                  console.log("removing " + f.id + " " + f.sessionName);
+                  console.log(`removing ${f.id} ${f.sessionName}`);
                   this.remoteFavsTable.del({ id: f.id }).done(
                       () => {
-                          console.log("removed: " + f.id);
+                          console.log('removed: ' + f.id);
                           this.events.publish('favs:sync');
                       },
-                      (err) => { console.log("Error Removing:" + JSON.stringify(err)); }
+                      (err) => { console.log('Error Removing:' + JSON.stringify(err)); }
                   );
               });
 
@@ -153,9 +139,9 @@ export class UserData {
   cleanFavorites() {
       this._favorites = [];
       if (this.client) {          
-          this.storage.remove("favorites");
+          this.storage.remove('favorites');
           this.cleanRemoteFavs();
-          console.log("clear favs");          
+          console.log('clear favs');          
       }
       this.events.publish('favs:sync');
 

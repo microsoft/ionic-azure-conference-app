@@ -9,10 +9,10 @@ export class CodePushUpdate {
         return new Promise((resolve, reject) => {            
             if (window.codePush && window.cordova.platformId !== 'windows') {
                 window.codePush.checkForUpdate((remotePackage: IRemotePackage) => {
-                    resolve(remotePackage)
+                    resolve(remotePackage);
                 });
             } else {
-                reject(new Error("No update available"));
+                reject(new Error('No update available'));
             }
         });
      }
@@ -21,12 +21,12 @@ export class CodePushUpdate {
         remotePackage.download(
             (localPackage) => {
                 localPackage.install(
-                    () => { console.log("Install succeed"); },
-                    (error) => {console.log("Error installing package:" + error);},
-                    { installMode: InstallMode.IMMEDIATE})
+                    () => { console.log('Install succeed'); },
+                    (error) => { console.log('Error installing package:' + error); },
+                    { installMode: InstallMode.IMMEDIATE });
                 }
             ,
-            (error) => { console.log("error downloading package:" + error); }
+            (error) => { console.log('error downloading package:' + error); }
         );
     }        
 }

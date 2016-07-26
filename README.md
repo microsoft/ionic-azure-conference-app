@@ -1,6 +1,6 @@
 # Ionic 2 Conference Application
 
-This is purely a demo of Ionic 2 with TypeScript. It is still in development.
+This is purely a demo of Ionic 2 with TypeScript and Azure App Services. It is still in development and originally forked from https://github.com/driftyco/ionic-conference-app.
 
 
 ## Important!

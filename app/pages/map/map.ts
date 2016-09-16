@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { Page } from 'ionic-angular';
-
 import { ConferenceData } from '../../providers/conference-data';
 
 
@@ -9,7 +7,7 @@ import { ConferenceData } from '../../providers/conference-data';
   templateUrl: 'build/pages/map/map.html'
 })
 export class MapPage {
-  constructor(private confData: ConferenceData) {}
+  constructor(public confData: ConferenceData) {}
 
   ionViewLoaded() {
     this.confData.getMap().then(mapData => {

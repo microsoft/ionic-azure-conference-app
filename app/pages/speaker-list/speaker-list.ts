@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { ActionSheet, NavController, Page } from 'ionic-angular';
+import { ActionSheet, ActionSheetController, NavController } from 'ionic-angular';
+import { InAppBrowser } from 'ionic-native';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { SessionDetailPage } from '../session-detail/session-detail';
@@ -14,26 +15,26 @@ export class SpeakerListPage {
   actionSheet: ActionSheet;
   speakers = [];
 
-  constructor(private nav: NavController, confData: ConferenceData) {
+  constructor(public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, confData: ConferenceData) {
     confData.getSpeakers().then(speakers => {
       this.speakers = speakers;
     });
   }
 
   goToSessionDetail(session) {
-    this.nav.push(SessionDetailPage, session);
+    this.navCtrl.push(SessionDetailPage, session);
   }
 
   goToSpeakerDetail(speakerName: string) {
-    this.nav.push(SpeakerDetailPage, speakerName);
+    this.navCtrl.push(SpeakerDetailPage, speakerName);
   }
 
   goToSpeakerTwitter(speaker) {
-    window.open(`https://twitter.com/${speaker.twitter}`);
+    new InAppBrowser(`https://twitter.com/${speaker.twitter}`, '_system');
   }
 
   openSpeakerShare(speaker) {
-    let actionSheet = ActionSheet.create({
+    let actionSheet = this.actionSheetCtrl.create({
       title: 'Share ' + speaker.name,
       buttons: [
         {
@@ -61,6 +62,30 @@ export class SpeakerListPage {
       ]
     });
 
-    this.nav.present(actionSheet);
+    actionSheet.present();
+  }
+
+  openContact(speaker) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Contact with ' + speaker.name,
+      buttons: [
+        {
+          text: `Email ( ${speaker.email} )`,
+          icon: 'mail',
+          handler: () => {
+            window.open('mailto:' + speaker.email);
+          }
+        },
+        {
+          text: `Call ( ${speaker.phone} )`,
+          icon: 'call',
+          handler: () => {
+            window.open('tel:' + speaker.phone);
+          }
+        }
+      ]
+    });
+
+    actionSheet.present();
   }
 }

@@ -45,9 +45,9 @@ class ConferenceApp {
   rootPage: any = TabsPage;
 
   constructor(
-    private events: Events,
-    private userData: UserData,
-    private menu: MenuController,
+    public events: Events,
+    public userData: UserData,
+    public menu: MenuController,
     platform: Platform,
     private confData: ConferenceData
   ) {
@@ -121,6 +121,4 @@ class ConferenceApp {
 // See the theming docs for the default values:
 // http://ionicframework.com/docs/v2/theming/platform-specific-styles/
 
-ionicBootstrap(ConferenceApp, [ConferenceData, UserData], {
-  tabbarPlacement: 'bottom'
-});
+ionicBootstrap(ConferenceApp, [ConferenceData, UserData], { });

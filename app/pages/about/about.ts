@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Popover, ViewController, Alert } from 'ionic-angular';
+import { PopoverController, ViewController, AlertController } from 'ionic-angular';
 import {CodePushUpdate} from '../../providers/codepush-update';
 
 
@@ -15,9 +15,7 @@ import {CodePushUpdate} from '../../providers/codepush-update';
 })
 class PopoverPage {
 
-  constructor(private viewCtrl: ViewController) {
-
-  }
+  constructor(public viewCtrl: ViewController) { }
 
   close() {
     this.viewCtrl.dismiss();
@@ -35,28 +33,29 @@ export class AboutPage {
   isWindows: boolean;
 
   constructor(
-      private nav: NavController,
-      private updater: CodePushUpdate) {
+      public popoverCtrl: PopoverController,
+      public alertCtrl: AlertController,
+      public updater: CodePushUpdate) {
       this.isWindows = window.cordova.platformId === 'windows';
   }
 
   presentPopover(event) {
-    let popover = Popover.create(PopoverPage);
-    this.nav.present(popover, { ev: event });
+    let popover = this.popoverCtrl.create(PopoverPage);
+    popover.present({ ev: event });
   }
 
   checkAndInstallUpdates() {
       this.updater.checkForUpdate().then((remotePackage) => {
           if (!remotePackage) {
-              let alert = Alert.create({
+              let alert = this.alertCtrl.create({
                   title: 'No update available!',
                   subTitle: 'We could not find any update.',
                   buttons: ['Ok']
               });
-              this.nav.present(alert);
+              alert.present();
           } else {
               console.log('update available: ' + remotePackage.appVersion);
-              let alert = Alert.create({
+              let alert = this.alertCtrl.create({
                   title: 'Update ' + remotePackage.appVersion + ' available',
                   message: 'Would you like to update your app?',
                   buttons: [
@@ -74,7 +73,7 @@ export class AboutPage {
                       }
                   ]
               });
-              this.nav.present(alert);
+              alert.present();
           }
       });
   }

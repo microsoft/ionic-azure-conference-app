@@ -14,7 +14,7 @@ export class UserData {
   remoteFavsTable: WindowsAzure.MobileServiceTable;
   loggedIn: boolean = false;
 
-  constructor(private events: Events) {}
+  constructor(public events: Events) {}
 
   hasFavorite(sessionName) {
     return (this._favorites.indexOf(sessionName) > -1);

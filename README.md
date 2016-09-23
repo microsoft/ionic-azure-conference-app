@@ -34,7 +34,7 @@ This is purely a demo of Ionic 2 with TypeScript and Azure App Services. It is s
 
 
 ## Contributing
-See [CONTRIBUTING.md](https://github.com/driftyco/ionic-conference-app/blob/master/CONTRIBUTING.md) :tada::+1:
+See [CONTRIBUTING.md](https://github.com/driftyco/ionic-conference-app/blob/master/.github/CONTRIBUTING.md) :tada::+1:
 
 
 ## Use Cases

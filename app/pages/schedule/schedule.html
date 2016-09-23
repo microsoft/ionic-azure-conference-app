@@ -38,9 +38,8 @@
         </ion-refresher-content>
     </ion-refresher>
 
-
-  <ion-list #scheduleList [hidden]="shownSessions === 0">
-    <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
+  <ion-list #scheduleList [hidden]="shownSessions === 0" [virtualScroll]="groups">
+    <ion-item-group *virtualItem="let group" [hidden]="group.hide">
 
       <ion-item-divider sticky>
         {{group.dayOfWeek}} &mdash; {{group.time}}

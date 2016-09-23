@@ -78,13 +78,31 @@ export class ConferenceData {
 
   getTimeline(dayIndex, queryText = '', excludeTracks = [], segment = 'all') {
     return this.load().then(data => {
-      let day = data.schedule[dayIndex];
+      let timeline = [];
+      
+      if (dayIndex == -1) {
+        // Get all days of data
+        for (var i = 0; i < data.schedule.length; i++) {
+          timeline.push(this._getDay(data, i, queryText, excludeTracks, segment));
+        }
+      } else {
+        // Only one day was specified
+        timeline.push(this._getDay(data, dayIndex, queryText, excludeTracks, segment));
+      }
+
+      return timeline;
+    });
+  }
+
+  private _getDay(data, dayIndex, queryText, excludeTracks = [], segment = 'all') {
+    let day = data.schedule[dayIndex];
       day.shownSessions = 0;
 
       queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
       let queryWords = queryText.split(' ').filter(w => !!w.trim().length);
 
       day.groups.forEach(group => {
+        group.dayOfWeek = day.dayOfWeek;
         group.hide = true;
 
         group.sessions.forEach(session => {
@@ -102,7 +120,6 @@ export class ConferenceData {
       });
 
       return day;
-    });
   }
 
   filterSession(session, queryWords, excludeTracks, segment) {

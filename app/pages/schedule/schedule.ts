@@ -18,7 +18,7 @@ export class SchedulePage {
   // the List and not a reference to the element
   @ViewChild('scheduleList', {read: List}) scheduleList: List;
 
-  dayIndex = 0;
+  dayIndex = -1;
   queryText = '';
   segment = 'all';
   excludeTracks = [];
@@ -60,8 +60,16 @@ export class SchedulePage {
     this.scheduleList && this.scheduleList.closeSlidingItems();
 
     this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).then(data => {
-      this.shownSessions = data.shownSessions;
-      this.groups = data.groups;
+      var shownSessions = [];
+      var groups = [];
+
+      data.forEach(day => {
+        shownSessions.push(day.shownSessions);
+        groups = groups.concat(day.groups);
+      }, this);
+      
+      this.shownSessions = shownSessions;
+      this.groups = groups;
     });
   }
 

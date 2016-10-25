@@ -1,9 +1,0 @@
-{
-  "name": "ionic-conference-app",
-  "dependencies": {},
-  "globalDevDependencies": {
-    "cordova": "registry:dt/cordova#0.0.0+20160607055823",
-    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
-    "google.maps": "registry:dt/google.maps#3.20.0+20160626235650"
-  }
-}
